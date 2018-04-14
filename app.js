@@ -1,32 +1,47 @@
-var express = require('express');
+var express = require("express");
 var app = express();
-var formidable = require('express-formidable');
+var formidable = require("express-formidable");
 
-db = require('./db')
+db = require("./db");
 
-app.use(formidable())
+app.use(function(req, res, next) {
+  var origin = req.headers.origin;
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type,appId,subTypeId"
+  );
+  next();
+});
+
+app.use(formidable());
 
 // Users
-usersController = require(__dirname+'/controllers/users');
-app.use('/api/users', usersController);
+usersController = require(__dirname + "/controllers/users");
+app.use("/api/users", usersController);
 
 // Posts
-postsController = require(__dirname+'/controllers/posts');
-app.use('/api/posts', postsController);
+postsController = require(__dirname + "/controllers/posts");
+app.use("/api/posts", postsController);
 
 // Posts
-tagsController = require(__dirname+'/controllers/tags');
-app.use('/api/tags', tagsController);
+tagsController = require(__dirname + "/controllers/tags");
+app.use("/api/tags", tagsController);
 
-// Auth  
-AuthController = require(__dirname+'/controllers/auth');
-app.use('/api/auth', AuthController);
+// Auth
+AuthController = require(__dirname + "/controllers/auth");
+app.use("/api/auth", AuthController);
 
-app.get('/', (req, res) => {
-    res.json({
-        status: "OK",
-        message: "Hey"
-    })
-})
+app.get("/", (req, res) => {
+  res.json({
+    status: "OK",
+    message: "Hey"
+  });
+});
 
 module.exports = app;
