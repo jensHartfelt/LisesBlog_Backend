@@ -4,8 +4,8 @@ var router = express.Router();
 var db = require('../db');
 var jwt = require('jsonwebtoken');
 var saltRounds = 10; // Sets cryptography depth i think
+var helpers = require("../helpers");
 // require('dotenv').load(); // Configuration stuff
-
 
 // Login user
 router.post('/login', (req, res) => {
@@ -55,6 +55,16 @@ router.post('/login', (req, res) => {
         console.log("err", err)
         res.status(200)
         res.send({status: "ERROR", message: "Could not login"})
+    }
+})
+
+router.get('/check-token', helpers.verifyToken, (req, res) => {
+    if (res.locals.authData) {
+        return res.json({
+            status: "OK",
+            message: "User is logged in",
+            user: res.locals.authData
+        })
     }
 })
 

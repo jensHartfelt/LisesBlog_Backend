@@ -5,7 +5,7 @@ var formidable = require("express-formidable");
 db = require("./db");
 
 app.use(function(req, res, next) {
-  var origin = req.headers.origin;
+  // var origin = req.headers.origin;
   res.setHeader("Access-Control-Allow-Origin", "*");
 
   res.setHeader(
@@ -14,7 +14,7 @@ app.use(function(req, res, next) {
   );
   res.setHeader(
     "Access-Control-Allow-Headers",
-    "X-Requested-With,content-type,appId,subTypeId"
+    "X-Requested-With,content-type,Authorization"
   );
   next();
 });
